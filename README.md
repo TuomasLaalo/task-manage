@@ -81,6 +81,7 @@ This creates a real `.env` file that your app will use.
 
 ### 4. Run backend
 ```bash
+npm run build:backend
 npm run dev:backend
 ```
 ### 5. Run frontend
