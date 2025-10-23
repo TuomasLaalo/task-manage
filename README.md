@@ -345,7 +345,7 @@ You can choose either **Path 1 (Manual deployment & CD workflow)** or **Path 2 (
       - Update your CI workflow from Task 2 to include a CD (Continuous Deployment) step.
       - Configure deployment to trigger only when a new release tag is pushed.
 
-> **Tip:** Render.com provides **Blueprints**, which are YAML files that define your entire infrastructure as code (IaC). Blueprints allow you to version, review, and automate the setup of services, databases, environment variables, and more directly from your repository.  
+> [!TIP] Render.com provides **Blueprints**, which are YAML files that define your entire infrastructure as code (IaC). Blueprints allow you to version, review, and automate the setup of services, databases, environment variables, and more directly from your repository.  
 >  
 > With Blueprints, you can:
 > - Describe all resources (web services, static sites, databases) in a single file.
