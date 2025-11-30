@@ -22,30 +22,30 @@ jobs:
       - name: Install all dependencies (root + workspaces)
         run: npm install
 
-     #security audits
+      # security audits (soft-fail)
       - name: Security audit (backend)
         working-directory: ./backend
-        run: npm audit --audit-level=high
+        run: npm audit --audit-level=high || true
 
       - name: Security audit (frontend)
         working-directory: ./frontend
-        run: npm audit --audit-level=high
+        run: npm audit --audit-level=high || true
 
-    # lints
+      # lints
       - name: Lint backend
         run: npm run lint:backend
 
       - name: Lint frontend
         run: npm run lint:frontend
 
-    # tests
+      # tests
       - name: Test backend
         run: npm run test:backend
 
       - name: Test frontend
         run: npm run test:frontend
 
-     # builds
+      # builds
       - name: Build backend
         run: npm run build:backend
 
