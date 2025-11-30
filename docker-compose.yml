@@ -46,6 +46,8 @@ services:
     build:
       context: ./frontend
       dockerfile: Dockerfile
+      args:
+        VITE_API_URL: http://localhost:5000
     container_name: task-frontend
     ports:
       - "5173:80"
