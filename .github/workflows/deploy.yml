@@ -25,12 +25,17 @@ jobs:
 
       # FRONTEND
       - name: Build frontend image
-        run: docker build -f frontend/Dockerfile -t ghcr.io/${{ secrets.GHCR_USERNAME }}/task-manage-frontend:latest ./frontend
+        run: |
+          docker build \
+            --build-arg VITE_API_URL=${{ secrets.VITE_API_URL_PROD }} \
+            -f frontend/Dockerfile \
+            -t ghcr.io/${{ secrets.GHCR_USERNAME }}/task-manage-frontend:latest \
+            frontend
 
       - name: Push frontend image
         run: docker push ghcr.io/${{ secrets.GHCR_USERNAME }}/task-manage-frontend:latest
 
-      # RENDER DEPLOY HOOK
+      # RENDER DEPLOY
       - name: Trigger Render deploy
         run: curl -X POST "$RENDER_DEPLOY_HOOK"
         env:

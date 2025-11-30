@@ -17,35 +17,10 @@ if (process.env.NODE_ENV !== 'test') {
 }
 
 app.use(helmet()); 
-
-// CORS configuration - supports multiple origins
-const corsOptions = {
-  origin: (origin: string | undefined, callback: (err: Error | null, allow?: boolean) => void) => {
-    const allowedOrigins = Array.isArray(config.frontendUrl) 
-      ? config.frontendUrl 
-      : [config.frontendUrl];
-    
-    // Allow requests with no origin (like mobile apps or curl requests)
-    if (!origin) {
-      return callback(null, true);
-    }
-    
-    // In production, also allow any Render.com origin
-    if (config.nodeEnv === 'production' && origin.includes('.onrender.com')) {
-      return callback(null, true);
-    }
-    
-    // Check if origin is in allowed list
-    if (allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
-    }
-  },
+app.use(cors({
+  origin: config.frontendUrl,
   credentials: true
-};
-
-app.use(cors(corsOptions));
+}));
 app.use(morgan('dev')); 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
