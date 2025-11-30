@@ -16,36 +16,22 @@ jobs:
       - name: Login to GHCR
         run: echo "${{ secrets.GHCR_TOKEN }}" | docker login ghcr.io -u "${{ secrets.GHCR_USERNAME }}" --password-stdin
 
-      # ---------------------
-      # Build & push backend
-      # ---------------------
+      # BACKEND
       - name: Build backend image
-        run: |
-          docker build \
-            -f backend/Dockerfile \
-            -t ghcr.io/${{ secrets.GHCR_USERNAME }}/task-manage-backend:latest \
-            .
+        run: docker build -f backend/Dockerfile -t ghcr.io/${{ secrets.GHCR_USERNAME }}/task-manage-backend:latest .
 
       - name: Push backend image
         run: docker push ghcr.io/${{ secrets.GHCR_USERNAME }}/task-manage-backend:latest
 
-      # ---------------------
-      # Build & push frontend
-      # ---------------------
+      # FRONTEND
       - name: Build frontend image
-        run: |
-          docker build \
-            -f frontend/Dockerfile \
-            -t ghcr.io/${{ secrets.GHCR_USERNAME }}/task-manage-frontend:latest \
-            .
+        run: docker build -f frontend/Dockerfile -t ghcr.io/${{ secrets.GHCR_USERNAME }}/task-manage-frontend:latest ./frontend
 
       - name: Push frontend image
         run: docker push ghcr.io/${{ secrets.GHCR_USERNAME }}/task-manage-frontend:latest
 
-      # ---------------------
-      # Trigger Render deployment
-      # ---------------------
+      # RENDER DEPLOY HOOK
       - name: Trigger Render deploy
-        run: curl -X POST $RENDER_DEPLOY_HOOK
+        run: curl -X POST "$RENDER_DEPLOY_HOOK"
         env:
           RENDER_DEPLOY_HOOK: ${{ secrets.RENDER_DEPLOY_HOOK }}
