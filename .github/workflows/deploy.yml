@@ -16,26 +16,31 @@ jobs:
       - name: Login to GHCR
         run: echo "${{ secrets.GHCR_TOKEN }}" | docker login ghcr.io -u "${{ secrets.GHCR_USERNAME }}" --password-stdin
 
-      # BACKEND
+      # BACKEND IMAGE
       - name: Build backend image
-        run: docker build -f backend/Dockerfile -t ghcr.io/${{ secrets.GHCR_USERNAME }}/task-manage-backend:latest .
+        run: |
+          docker build \
+            -f backend/Dockerfile \
+            -t ghcr.io/${{ secrets.GHCR_USERNAME }}/task-manage-backend:latest \
+            .
 
       - name: Push backend image
         run: docker push ghcr.io/${{ secrets.GHCR_USERNAME }}/task-manage-backend:latest
 
-      # FRONTEND
+
+      # FRONTEND IMAGE
       - name: Build frontend image
         run: |
           docker build \
-            --build-arg VITE_API_URL=${{ secrets.VITE_API_URL_PROD }} \
             -f frontend/Dockerfile \
             -t ghcr.io/${{ secrets.GHCR_USERNAME }}/task-manage-frontend:latest \
-            frontend
+            ./frontend
 
       - name: Push frontend image
         run: docker push ghcr.io/${{ secrets.GHCR_USERNAME }}/task-manage-frontend:latest
 
-      # RENDER DEPLOY
+
+      # TRIGGER RENDER DEPLOY
       - name: Trigger Render deploy
         run: curl -X POST "$RENDER_DEPLOY_HOOK"
         env:
